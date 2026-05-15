@@ -3,1339 +3,439 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JEE 2028 — PDF Study Vault</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+<title>JEE 2028</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
-  :root {
-    --bg: #07080d;
-    --surface: #0f1118;
-    --surface2: #161923;
-    --border: #1e2535;
-    --accent: #f0a500;
-    --accent2: #e05c2a;
-    --accent3: #2af0b0;
-    --text: #e8eaf2;
-    --muted: #6b7490;
-    --physics: #3b82f6;
-    --chemistry: #22c55e;
-    --maths: #f97316;
-    --mixed: #a855f7;
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  /* Background grid */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(240,165,0,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(240,165,0,0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  /* Glow orbs */
-  body::after {
-    content: '';
-    position: fixed;
-    top: -200px;
-    right: -200px;
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, rgba(240,165,0,0.07) 0%, transparent 70%);
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  /* ──────────────────── HEADER ──────────────────── */
-  header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(7,8,13,0.85);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
-    padding: 0 2rem;
-  }
-
-  .header-inner {
-    max-width: 1280px;
-    margin: 0 auto;
-    height: 64px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .logo-icon {
-    width: 36px;
-    height: 36px;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-  }
-
-  .logo-text {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.6rem;
-    letter-spacing: 2px;
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  .logo-badge {
-    background: var(--accent3);
-    color: var(--bg);
-    font-size: 0.6rem;
-    font-weight: 700;
-    padding: 2px 6px;
-    border-radius: 4px;
-    letter-spacing: 1px;
-    font-family: 'JetBrains Mono', monospace;
-  }
-
-  .header-right {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .tg-status {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.78rem;
-    color: var(--muted);
-    background: var(--surface);
-    border: 1px solid var(--border);
-    padding: 6px 14px;
-    border-radius: 20px;
-  }
-
-  .status-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: #6b7490;
-    transition: background 0.3s;
-  }
-  .status-dot.live { background: var(--accent3); box-shadow: 0 0 8px var(--accent3); animation: pulse 2s infinite; }
-  .status-dot.error { background: #ef4444; }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-  }
-
-  .btn-config {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    color: var(--bg);
-    border: none;
-    padding: 8px 16px;
-    border-radius: 8px;
-    font-size: 0.82rem;
-    font-weight: 600;
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    transition: opacity 0.2s, transform 0.2s;
-  }
-  .btn-config:hover { opacity: 0.85; transform: translateY(-1px); }
-
-  /* ──────────────────── HERO ──────────────────── */
-  .hero {
-    position: relative;
-    z-index: 1;
-    padding: 60px 2rem 40px;
-    text-align: center;
-    max-width: 800px;
-    margin: 0 auto;
-  }
-
-  .hero-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
-    color: var(--accent3);
-    background: rgba(42, 240, 176, 0.08);
-    border: 1px solid rgba(42, 240, 176, 0.2);
-    padding: 4px 12px;
-    border-radius: 20px;
-    margin-bottom: 20px;
-    letter-spacing: 1px;
-  }
-
-  .hero h1 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(3rem, 8vw, 5.5rem);
-    line-height: 0.95;
-    letter-spacing: 3px;
-    margin-bottom: 16px;
-  }
-
-  .hero h1 span {
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  .hero p {
-    color: var(--muted);
-    font-size: 1rem;
-    line-height: 1.7;
-    max-width: 500px;
-    margin: 0 auto 32px;
-  }
-
-  /* ──────────────────── SEARCH ──────────────────── */
-  .search-wrap {
-    position: relative;
-    max-width: 640px;
-    margin: 0 auto 16px;
-    z-index: 1;
-  }
-
-  .search-icon {
-    position: absolute;
-    left: 18px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--muted);
-    font-size: 1.1rem;
-    pointer-events: none;
-  }
-
-  #searchInput {
-    width: 100%;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1rem;
-    padding: 16px 50px 16px 50px;
-    border-radius: 14px;
-    outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-
-  #searchInput:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(240,165,0,0.1);
-  }
-
-  #searchInput::placeholder { color: var(--muted); }
-
-  .search-shortcut {
-    position: absolute;
-    right: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--muted);
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    padding: 2px 7px;
-    border-radius: 5px;
-  }
-
-  /* Filter chips */
-  .filters {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-bottom: 16px;
-    position: relative;
-    z-index: 1;
-  }
-
-  .chip {
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 500;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--muted);
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .chip:hover { border-color: var(--accent); color: var(--accent); }
-  .chip.active { background: var(--accent); border-color: var(--accent); color: var(--bg); font-weight: 600; }
-  .chip[data-subject="Physics"].active { background: var(--physics); border-color: var(--physics); color: #fff; }
-  .chip[data-subject="Chemistry"].active { background: var(--chemistry); border-color: var(--chemistry); color: #fff; }
-  .chip[data-subject="Mathematics"].active { background: var(--maths); border-color: var(--maths); color: #fff; }
-  .chip[data-subject="Mixed"].active { background: var(--mixed); border-color: var(--mixed); color: #fff; }
-
-  /* ──────────────────── SETUP BANNER ──────────────────── */
-  .setup-banner {
-    position: relative;
-    z-index: 1;
-    max-width: 1280px;
-    margin: 0 auto 32px;
-    padding: 0 2rem;
-  }
-
-  .setup-card {
-    background: linear-gradient(135deg, rgba(240,165,0,0.06), rgba(224,92,42,0.06));
-    border: 1px solid rgba(240,165,0,0.2);
-    border-radius: 16px;
-    padding: 24px 28px;
-    display: flex;
-    align-items: flex-start;
-    gap: 20px;
-  }
-
-  .setup-icon { font-size: 2rem; flex-shrink: 0; margin-top: 2px; }
-
-  .setup-body h3 {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--accent);
-    margin-bottom: 6px;
-  }
-
-  .setup-body p {
-    font-size: 0.85rem;
-    color: var(--muted);
-    line-height: 1.6;
-    margin-bottom: 12px;
-  }
-
-  .setup-steps {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .setup-step {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 6px 12px;
-    font-size: 0.78rem;
-    font-family: 'JetBrains Mono', monospace;
-    color: var(--text);
-  }
-
-  .step-num {
-    width: 18px;
-    height: 18px;
-    background: var(--accent);
-    color: var(--bg);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.65rem;
-    font-weight: 700;
-    flex-shrink: 0;
-  }
-
-  /* ──────────────────── STATS BAR ──────────────────── */
-  .stats-bar {
-    position: relative;
-    z-index: 1;
-    max-width: 1280px;
-    margin: 0 auto 32px;
-    padding: 0 2rem;
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-
-  .stat-pill {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 10px 18px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .stat-label { font-size: 0.75rem; color: var(--muted); }
-  .stat-value { font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; font-weight: 600; color: var(--text); }
-  .stat-value.loading { color: var(--muted); font-size: 0.85rem; animation: shimmer 1.5s infinite; }
-
-  @keyframes shimmer { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-
-  /* ──────────────────── CONFIG MODAL ──────────────────── */
-  .modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.7);
-    backdrop-filter: blur(8px);
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s;
-  }
-
-  .modal-overlay.open { opacity: 1; pointer-events: all; }
-
-  .modal {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    width: 100%;
-    max-width: 520px;
-    padding: 32px;
-    transform: translateY(20px);
-    transition: transform 0.3s;
-  }
-
-  .modal-overlay.open .modal { transform: translateY(0); }
-
-  .modal-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 24px;
-  }
-
-  .modal-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.6rem;
-    letter-spacing: 2px;
-    color: var(--accent);
-  }
-
-  .modal-close {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    color: var(--muted);
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1.1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-  }
-  .modal-close:hover { color: var(--text); border-color: var(--muted); }
-
-  .field { margin-bottom: 20px; }
-
-  .field label {
-    display: block;
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: var(--muted);
-    margin-bottom: 8px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
-  .field input {
-    width: 100%;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    color: var(--text);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.85rem;
-    padding: 12px 16px;
-    border-radius: 10px;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  .field input:focus { border-color: var(--accent); }
-  .field input::placeholder { color: var(--muted); }
-
-  .field-hint {
-    font-size: 0.75rem;
-    color: var(--muted);
-    margin-top: 6px;
-    line-height: 1.5;
-  }
-
-  .field-hint a { color: var(--accent); text-decoration: none; }
-  .field-hint a:hover { text-decoration: underline; }
-
-  .btn-primary {
-    width: 100%;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    color: var(--bg);
-    border: none;
-    padding: 14px;
-    border-radius: 12px;
-    font-size: 0.95rem;
-    font-weight: 700;
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    transition: opacity 0.2s, transform 0.2s;
-    letter-spacing: 0.5px;
-  }
-  .btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
-  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-
-  .modal-note {
-    margin-top: 16px;
-    background: rgba(42,240,176,0.06);
-    border: 1px solid rgba(42,240,176,0.15);
-    border-radius: 10px;
-    padding: 12px 14px;
-    font-size: 0.78rem;
-    color: var(--accent3);
-    line-height: 1.6;
-  }
-
-  /* ──────────────────── GRID ──────────────────── */
-  .main {
-    position: relative;
-    z-index: 1;
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 0 2rem 60px;
-  }
-
-  .section-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  }
-
-  .section-title {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.8rem;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .count-badge {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    font-size: 0.7rem;
-    padding: 2px 8px;
-    border-radius: 10px;
-    color: var(--muted);
-  }
-
-  .sort-select {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    color: var(--muted);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.8rem;
-    padding: 6px 12px;
-    border-radius: 8px;
-    outline: none;
-    cursor: pointer;
-  }
-
-  .pdf-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 16px;
-  }
-
-  /* ──────────────────── PDF CARD ──────────────────── */
-  .pdf-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 20px;
-    cursor: pointer;
-    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    animation: fadeUp 0.4s ease both;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .pdf-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-
-  .pdf-card[data-subject="Physics"]::before { background: var(--physics); }
-  .pdf-card[data-subject="Chemistry"]::before { background: var(--chemistry); }
-  .pdf-card[data-subject="Mathematics"]::before { background: var(--maths); }
-  .pdf-card[data-subject="Mixed"]::before { background: var(--mixed); }
-
-  .pdf-card:hover {
-    border-color: rgba(240,165,0,0.3);
-    transform: translateY(-3px);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
-  }
-
-  .pdf-card:hover::before { opacity: 1; }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .card-top {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-  }
-
-  .pdf-thumb {
-    width: 48px;
-    height: 56px;
-    background: var(--surface2);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.4rem;
-    flex-shrink: 0;
-    border: 1px solid var(--border);
-    position: relative;
-  }
-
-  .pdf-thumb::after {
-    content: 'PDF';
-    position: absolute;
-    bottom: 4px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.45rem;
-    font-weight: 700;
-    color: var(--accent2);
-    letter-spacing: 0.5px;
-  }
-
-  .card-info { flex: 1; min-width: 0; }
-
-  .card-title {
-    font-size: 0.92rem;
-    font-weight: 600;
-    line-height: 1.4;
-    margin-bottom: 6px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .card-meta {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex-wrap: wrap;
-  }
-
-  .subject-tag {
-    font-size: 0.7rem;
-    font-weight: 600;
-    padding: 2px 8px;
-    border-radius: 6px;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    font-family: 'JetBrains Mono', monospace;
-  }
-
-  .subject-tag.Physics { background: rgba(59,130,246,0.15); color: var(--physics); border: 1px solid rgba(59,130,246,0.2); }
-  .subject-tag.Chemistry { background: rgba(34,197,94,0.15); color: var(--chemistry); border: 1px solid rgba(34,197,94,0.2); }
-  .subject-tag.Mathematics { background: rgba(249,115,22,0.15); color: var(--maths); border: 1px solid rgba(249,115,22,0.2); }
-  .subject-tag.Mixed { background: rgba(168,85,247,0.15); color: var(--mixed); border: 1px solid rgba(168,85,247,0.2); }
-
-  .card-date {
-    font-size: 0.7rem;
-    color: var(--muted);
-    font-family: 'JetBrains Mono', monospace;
-  }
-
-  .card-desc {
-    font-size: 0.82rem;
-    color: var(--muted);
-    line-height: 1.55;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  .card-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-top: 10px;
-    border-top: 1px solid var(--border);
-  }
-
-  .card-size {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
-    color: var(--muted);
-  }
-
-  .btn-download {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 7px 14px;
-    border-radius: 8px;
-    font-size: 0.78rem;
-    font-weight: 500;
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    transition: all 0.2s;
-    text-decoration: none;
-  }
-
-  .btn-download:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-    background: rgba(240,165,0,0.05);
-  }
-
-  /* ──────────────────── LOADING / EMPTY / ERROR ──────────────────── */
-  .state-container {
-    grid-column: 1 / -1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 80px 20px;
-    text-align: center;
-    gap: 16px;
-  }
-
-  .state-icon { font-size: 3.5rem; }
-
-  .state-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.8rem;
-    letter-spacing: 2px;
-    color: var(--text);
-  }
-
-  .state-text { font-size: 0.9rem; color: var(--muted); max-width: 380px; line-height: 1.7; }
-
-  .spinner {
-    width: 48px;
-    height: 48px;
-    border: 3px solid var(--border);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-  }
-
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  /* ──────────────────── SKELETON CARDS ──────────────────── */
-  .skeleton-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    animation: fadeUp 0.4s ease both;
-  }
-
-  .skel {
-    background: linear-gradient(90deg, var(--surface2) 25%, var(--border) 50%, var(--surface2) 75%);
-    background-size: 200% 100%;
-    border-radius: 6px;
-    animation: skelShimmer 1.5s infinite;
-  }
-
-  @keyframes skelShimmer {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
-  }
-
-  /* ──────────────────── TOAST ──────────────────── */
-  .toast {
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-    z-index: 9999;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 14px 18px;
-    font-size: 0.85rem;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    transform: translateX(120%);
-    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    max-width: 320px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-  }
-
-  .toast.show { transform: translateX(0); }
-  .toast.success { border-color: var(--accent3); }
-  .toast.error { border-color: #ef4444; }
-
-  /* ──────────────────── RESPONSIVE ──────────────────── */
-  @media (max-width: 640px) {
-    .header-inner { gap: 8px; }
-    .logo-text { font-size: 1.3rem; }
-    .setup-card { flex-direction: column; }
-    .stats-bar { gap: 8px; }
-    .pdf-grid { grid-template-columns: 1fr; }
-  }
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:'Poppins',sans-serif;
+background:#050816;
+color:white;
+overflow-x:hidden;
+min-height:100vh;
+background:
+radial-gradient(circle at top left,#1d4ed8 0%,transparent 25%),
+radial-gradient(circle at bottom right,#7c3aed 0%,transparent 25%),
+#050816;
+}
+
+body::before{
+content:'';
+position:fixed;
+width:200%;
+height:200%;
+background:
+linear-gradient(
+45deg,
+rgba(255,255,255,0.02) 25%,
+transparent 25%,
+transparent 50%,
+rgba(255,255,255,0.02) 50%,
+rgba(255,255,255,0.02) 75%,
+transparent 75%
+);
+background-size:60px 60px;
+animation:bgMove 20s linear infinite;
+z-index:-1;
+}
+
+@keyframes bgMove{
+0%{
+transform:translate(0,0);
+}
+100%{
+transform:translate(-60px,-60px);
+}
+}
+
+.glow{
+position:fixed;
+width:300px;
+height:300px;
+border-radius:50%;
+background:rgba(56,189,248,0.15);
+filter:blur(100px);
+animation:floatGlow 10s infinite alternate;
+z-index:-1;
+}
+
+.glow2{
+right:0;
+bottom:0;
+background:rgba(139,92,246,0.15);
+animation-delay:5s;
+}
+
+@keyframes floatGlow{
+0%{
+transform:translate(0,0);
+}
+100%{
+transform:translate(100px,-100px);
+}
+}
+
+header{
+padding:25px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+backdrop-filter:blur(20px);
+background:rgba(255,255,255,0.05);
+border-bottom:1px solid rgba(255,255,255,0.1);
+position:sticky;
+top:0;
+z-index:100;
+}
+
+.logo h1{
+font-size:2rem;
+font-weight:700;
+background:linear-gradient(90deg,#38bdf8,#8b5cf6,#f59e0b);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.logo span{
+font-size:13px;
+color:#9ca3af;
+}
+
+#status{
+padding:10px 16px;
+border-radius:14px;
+background:rgba(255,255,255,0.08);
+font-size:14px;
+color:#38bdf8;
+}
+
+.hero{
+padding:60px 20px 30px;
+text-align:center;
+}
+
+.hero h2{
+font-size:3rem;
+font-weight:700;
+margin-bottom:15px;
+background:linear-gradient(90deg,#38bdf8,#8b5cf6,#f59e0b);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.hero p{
+max-width:800px;
+margin:auto;
+color:#cbd5e1;
+line-height:1.7;
+font-size:16px;
+}
+
+.search{
+padding:30px 20px;
+}
+
+.search-box{
+max-width:900px;
+margin:auto;
+}
+
+input{
+width:100%;
+padding:18px 25px;
+border:none;
+outline:none;
+border-radius:20px;
+font-size:16px;
+background:rgba(255,255,255,0.08);
+color:white;
+border:1px solid rgba(255,255,255,0.08);
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:25px;
+padding:20px;
+max-width:1400px;
+margin:auto;
+}
+
+.card{
+background:rgba(255,255,255,0.06);
+border:1px solid rgba(255,255,255,0.08);
+padding:22px;
+border-radius:24px;
+backdrop-filter:blur(15px);
+transition:0.4s ease;
+}
+
+.card:hover{
+transform:translateY(-10px) scale(1.02);
+border-color:#38bdf8;
+box-shadow:
+0 0 20px rgba(56,189,248,0.2),
+0 0 40px rgba(139,92,246,0.2);
+}
+
+.subject{
+display:inline-block;
+padding:7px 14px;
+border-radius:12px;
+font-size:12px;
+font-weight:600;
+margin-bottom:15px;
+background:linear-gradient(90deg,#2563eb,#7c3aed);
+color:white;
+}
+
+.card h3{
+font-size:20px;
+margin-bottom:10px;
+}
+
+.card p{
+color:#cbd5e1;
+font-size:14px;
+line-height:1.6;
+}
+
+.size{
+margin-top:12px;
+color:#94a3b8;
+font-size:13px;
+}
+
+button{
+margin-top:18px;
+padding:12px 18px;
+border:none;
+border-radius:14px;
+background:linear-gradient(90deg,#38bdf8,#8b5cf6);
+color:white;
+font-weight:600;
+cursor:pointer;
+width:100%;
+font-size:15px;
+}
+
+.empty{
+text-align:center;
+padding:120px 20px;
+color:#94a3b8;
+font-size:18px;
+}
+
+footer{
+margin-top:50px;
+padding:30px 20px;
+text-align:center;
+background:rgba(255,255,255,0.04);
+border-top:1px solid rgba(255,255,255,0.08);
+}
+
+.credit{
+margin-top:15px;
+font-size:15px;
+color:#f59e0b;
+}
 </style>
 </head>
+
 <body>
 
-<!-- Header -->
+<div class="glow"></div>
+<div class="glow glow2"></div>
+
 <header>
-  <div class="header-inner">
-    <div class="logo">
-      <div class="logo-icon">📚</div>
-      <span class="logo-text">JEE VAULT</span>
-      <span class="logo-badge">2028</span>
-    </div>
-    <div class="header-right">
-      <div class="tg-status">
-        <div class="status-dot" id="statusDot"></div>
-        <span id="statusText">Not connected</span>
-      </div>
-      <button class="btn-config" onclick="openModal()">⚙ Configure Channel</button>
-    </div>
-  </div>
+
+<div class="logo">
+<h1>PDF BANK — Dream IIT</h1>
+<span>PDF Library</span>
+</div>
+
+<div id="status">Loading....</div>
+
 </header>
 
-<!-- Config Modal -->
-<div class="modal-overlay" id="configModal">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title">Connect Telegram</div>
-      <button class="modal-close" onclick="closeModal()">✕</button>
-    </div>
+<section class="hero">
 
-    <div class="field">
-      <label>Bot Token</label>
-      <input type="password" id="botToken" placeholder="1234567890:ABCdef..." />
-      <div class="field-hint">
-        Create a bot via <a href="https://t.me/BotFather" target="_blank">@BotFather</a> and paste the token here.
-        The bot must be an admin of your channel.
-      </div>
-    </div>
+<h2>JEE 2028 Ultimate PDF Bank</h2>
 
-    <div class="field">
-      <label>Channel Username or ID</label>
-      <input type="text" id="channelId" placeholder="@yourchannel or -100xxxxxxxxxx" />
-      <div class="field-hint">
-        Public channel: <code style="color:var(--accent3)">@channelname</code> &nbsp;|&nbsp;
-        Private channel: numeric ID like <code style="color:var(--accent3)">-1001234567890</code>
-      </div>
-    </div>
+<p>
+Access high-quality Physics, Chemistry and Mathematics PDFs directly from Telegram.
+Built for serious JEE aspirants who are tired of messy folders and chaos.
+</p>
 
-    <div class="field">
-      <label>Max PDFs to fetch</label>
-      <input type="number" id="maxPdfs" value="100" min="10" max="1000" />
-    </div>
+</section>
 
-    <button class="btn-primary" id="connectBtn" onclick="connectAndFetch()">🔗 Connect &amp; Fetch PDFs</button>
+<div class="search">
+<div class="search-box">
 
-    <div class="modal-note">
-      ℹ️ All processing happens in your browser. Your bot token is never sent anywhere except the official Telegram API.
-    </div>
-  </div>
+<input
+type="text"
+id="search"
+placeholder="Search PDFs, Chapters, Subjects..."
+oninput="renderPDFs()"
+>
+
+</div>
 </div>
 
-<!-- Hero -->
-<div class="hero">
-  <div class="hero-tag">⚡ POWERED BY TELEGRAM · JEE 2028</div>
-  <h1>YOUR STUDY<br><span>PDF VAULT</span></h1>
-  <p>Connect your Telegram channel to instantly browse, search, and download all study PDFs — Physics, Chemistry &amp; Mathematics for JEE 2028.</p>
+<div class="grid" id="pdfGrid">
+<div class="empty">
+Loading PDFs from server...
+</div>
 </div>
 
-<!-- Search -->
-<div style="position:relative;z-index:1;padding:0 2rem;">
-  <div class="search-wrap" style="max-width:640px;margin:0 auto 16px;">
-    <span class="search-icon">🔍</span>
-    <input type="text" id="searchInput" placeholder="Search PDFs... (e.g. Thermodynamics, Organic, Limits)" oninput="filterPDFs()" />
-    <span class="search-shortcut">⌘K</span>
-  </div>
-  <div class="filters">
-    <div class="chip active" data-subject="All" onclick="setFilter(this)">All</div>
-    <div class="chip" data-subject="Physics" onclick="setFilter(this)">⚛️ Physics</div>
-    <div class="chip" data-subject="Chemistry" onclick="setFilter(this)">🧪 Chemistry</div>
-    <div class="chip" data-subject="Mathematics" onclick="setFilter(this)">📐 Mathematics</div>
-    <div class="chip" data-subject="Mixed" onclick="setFilter(this)">📦 Mixed</div>
-  </div>
-</div>
-
-<!-- Setup Banner -->
-<div class="setup-banner" id="setupBanner">
-  <div class="setup-card">
-    <div class="setup-icon">🚀</div>
-    <div class="setup-body">
-      <h3>Quick Setup — 3 Steps</h3>
-      <p>Connect your Telegram channel in minutes. Once configured, all PDFs are instantly searchable.</p>
-      <div class="setup-steps">
-        <div class="setup-step"><div class="step-num">1</div>Create bot via @BotFather</div>
-        <div class="setup-step"><div class="step-num">2</div>Add bot as channel admin</div>
-        <div class="setup-step"><div class="step-num">3</div>Click "Configure Channel"</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Stats -->
-<div class="stats-bar" id="statsBar" style="display:none">
-  <div class="stat-pill">
-    <div>
-      <div class="stat-label">Total PDFs</div>
-      <div class="stat-value" id="statTotal">—</div>
-    </div>
-  </div>
-  <div class="stat-pill">
-    <div>
-      <div class="stat-label">Physics</div>
-      <div class="stat-value" id="statPhysics" style="color:var(--physics)">—</div>
-    </div>
-  </div>
-  <div class="stat-pill">
-    <div>
-      <div class="stat-label">Chemistry</div>
-      <div class="stat-value" id="statChemistry" style="color:var(--chemistry)">—</div>
-    </div>
-  </div>
-  <div class="stat-pill">
-    <div>
-      <div class="stat-label">Mathematics</div>
-      <div class="stat-value" id="statMaths" style="color:var(--maths)">—</div>
-    </div>
-  </div>
-  <div class="stat-pill" style="margin-left:auto">
-    <div>
-      <div class="stat-label">Channel</div>
-      <div class="stat-value" id="statChannel" style="font-size:0.85rem">—</div>
-    </div>
-  </div>
-</div>
-
-<!-- Main Grid -->
-<div class="main">
-  <div class="section-header">
-    <div class="section-title">
-      📄 PDF LIBRARY
-      <span class="count-badge" id="resultCount">0 files</span>
-    </div>
-    <select class="sort-select" id="sortSelect" onchange="sortPDFs()">
-      <option value="date-desc">Newest first</option>
-      <option value="date-asc">Oldest first</option>
-      <option value="name-asc">Name A–Z</option>
-      <option value="name-desc">Name Z–A</option>
-      <option value="size-desc">Largest first</option>
-    </select>
-  </div>
-  <div class="pdf-grid" id="pdfGrid">
-    <!-- Initial empty state -->
-    <div class="state-container">
-      <div class="state-icon">📡</div>
-      <div class="state-title">AWAITING CONNECTION</div>
-      <div class="state-text">Configure your Telegram channel above to load all PDFs from your study group or channel.</div>
-    </div>
-  </div>
-</div>
-
-<!-- Toast -->
-<div class="toast" id="toast">
-  <span id="toastIcon">✅</span>
-  <span id="toastMsg">Success</span>
-</div>
+<footer>
+<p class="credit">Instagram: @aditya.0ff</p>
+<p class="credit">Community Admin: Rayyan</p>
+</footer>
 
 <script>
-// ─────────────── State ───────────────
+
+const BOT_TOKEN = "8207331539:AAEkAdAzfNScW2QuR_POxc8KmzYFYElY9aM";
+const CHANNEL_ID = "@jeeresources19";
+
 let allPDFs = [];
-let activeFilter = 'All';
-let botToken = '';
-let channelUsername = '';
 
-// ─────────────── Subject detection ───────────────
-const SUBJECT_KEYWORDS = {
-  Physics: ['physics','phy','mechanics','thermodynamics','waves','optics','electro','magnetic','current','newton','kinematics','fluids','gravitation','rotation','sem conductor','modern physics','nuclear','ray optics','wave optics','capacitor','inductor','circuit','resistance'],
-  Chemistry: ['chemistry','chem','organic','inorganic','physical','mole','reaction','acid','base','salt','periodic','bond','hybridization','equilibrium','electrode','redox','polymer','carbonyl','alkane','alkene','alkyne','amine','alcohol','ether','benzene','nomenclature','pcm','titration'],
-  Mathematics: ['maths','math','mathematics','algebra','calculus','integration','differentiation','function','limit','continuity','matrix','determinant','vector','3d','coordinate','conic','circle','parabola','ellipse','hyperbola','probability','statistics','permutation','combination','binomial','sequence','series','trigonometry','complex','sets'],
-};
+async function fetchPDFs(){
 
-function detectSubject(name, caption='') {
-  const text = (name + ' ' + caption).toLowerCase();
-  for (const [subj, keywords] of Object.entries(SUBJECT_KEYWORDS)) {
-    if (keywords.some(k => text.includes(k))) return subj;
-  }
-  return 'Mixed';
-}
+try{
 
-// ─────────────── Modal ───────────────
-function openModal() {
-  document.getElementById('configModal').classList.add('open');
-  if (botToken) document.getElementById('botToken').value = botToken;
-  if (channelUsername) document.getElementById('channelId').value = channelUsername;
-}
+const updatesURL =
+`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates?limit=9999999999`;
 
-function closeModal() {
-  document.getElementById('configModal').classList.remove('open');
-}
+const response = await fetch(updatesURL);
 
-document.getElementById('configModal').addEventListener('click', e => {
-  if (e.target === document.getElementById('configModal')) closeModal();
+const data = await response.json();
+
+const pdfs = [];
+
+data.result.forEach(update => {
+
+const msg = update.channel_post || update.message;
+
+if(!msg) return;
+
+if(msg.document &&
+msg.document.mime_type === 'application/pdf'){
+
+const doc = msg.document;
+
+pdfs.push({
+name: doc.file_name || 'PDF File',
+caption: msg.caption || '',
+fileId: doc.file_id,
+size: doc.file_size || 0
 });
 
-// ─────────────── Telegram API fetch ───────────────
-async function connectAndFetch() {
-  const token = document.getElementById('botToken').value.trim();
-  const channel = document.getElementById('channelId').value.trim();
-  const maxPdfs = parseInt(document.getElementById('maxPdfs').value) || 100;
-
-  if (!token || !channel) {
-    showToast('⚠️ Please fill in both bot token and channel ID.', 'error');
-    return;
-  }
-
-  botToken = token;
-  channelUsername = channel;
-
-  const btn = document.getElementById('connectBtn');
-  btn.disabled = true;
-  btn.textContent = '⏳ Fetching PDFs...';
-
-  closeModal();
-  showLoadingSkeleton();
-  setStatus('loading', 'Connecting...');
-
-  try {
-    // Verify bot works
-    const meRes = await fetch(`https://api.telegram.org/bot${token}/getMe`);
-    const meData = await meRes.json();
-    if (!meData.ok) throw new Error('Invalid bot token: ' + (meData.description || 'Unknown error'));
-
-    // Fetch messages
-    const pdfs = await fetchAllPDFs(token, channel, maxPdfs);
-
-    allPDFs = pdfs;
-    renderPDFs(filterAndSort());
-    updateStats();
-
-    document.getElementById('setupBanner').style.display = 'none';
-    document.getElementById('statsBar').style.display = 'flex';
-    document.getElementById('statChannel').textContent = channel;
-
-    setStatus('live', `${pdfs.length} PDFs`);
-    showToast(`✅ Loaded ${pdfs.length} PDFs from channel!`, 'success');
-
-  } catch (err) {
-    console.error(err);
-    setStatus('error', 'Error');
-    showToast('❌ ' + err.message, 'error');
-    showError(err.message);
-  } finally {
-    btn.disabled = false;
-    btn.textContent = '🔗 Connect & Fetch PDFs';
-  }
 }
 
-async function fetchAllPDFs(token, channel, maxCount) {
-  const pdfs = [];
-  let offset = 0;
-  const batchSize = 100;
-  let tries = 0;
-  const maxTries = Math.ceil(maxCount / batchSize) + 2;
-
-  while (pdfs.length < maxCount && tries < maxTries) {
-    tries++;
-    const url = `https://api.telegram.org/bot${token}/getUpdates?offset=${offset}&limit=${batchSize}&allowed_updates=["channel_post"]`;
-    const res = await fetch(url);
-    const data = await res.json();
-
-    if (!data.ok) throw new Error(data.description || 'Telegram API error');
-
-    const updates = data.result;
-    if (!updates || updates.length === 0) break;
-
-    offset = updates[updates.length - 1].update_id + 1;
-
-    for (const update of updates) {
-      const msg = update.channel_post || update.message;
-      if (!msg) continue;
-
-      // Check channel
-      const chatId = String(msg.chat.id);
-      const chatUsername = '@' + (msg.chat.username || '');
-      if (channel !== chatUsername && channel !== chatId) continue;
-
-      if (msg.document && msg.document.mime_type === 'application/pdf') {
-        const doc = msg.document;
-        const caption = msg.caption || '';
-        const name = doc.file_name || `document_${doc.file_id.slice(-8)}.pdf`;
-        const subject = detectSubject(name, caption);
-        const date = new Date(msg.date * 1000);
-
-        pdfs.push({
-          id: doc.file_id,
-          name,
-          caption,
-          subject,
-          size: doc.file_size || 0,
-          date,
-          dateStr: date.toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' }),
-          fileId: doc.file_id,
-          messageId: msg.message_id,
-          chatId: msg.chat.id,
-          chatUsername: msg.chat.username || '',
-        });
-
-        if (pdfs.length >= maxCount) break;
-      }
-    }
-
-    if (updates.length < batchSize) break;
-  }
-
-  // Sort newest first
-  pdfs.sort((a, b) => b.date - a.date);
-  return pdfs;
-}
-
-async function getFileUrl(token, fileId) {
-  const res = await fetch(`https://api.telegram.org/bot${token}/getFile?file_id=${fileId}`);
-  const data = await res.json();
-  if (!data.ok) throw new Error('Cannot get file link');
-  return `https://api.telegram.org/file/bot${token}/${data.result.file_path}`;
-}
-
-// ─────────────── Render ───────────────
-function renderPDFs(pdfs) {
-  const grid = document.getElementById('pdfGrid');
-  document.getElementById('resultCount').textContent = pdfs.length + ' file' + (pdfs.length !== 1 ? 's' : '');
-
-  if (pdfs.length === 0) {
-    grid.innerHTML = `
-      <div class="state-container">
-        <div class="state-icon">🔎</div>
-        <div class="state-title">NO RESULTS</div>
-        <div class="state-text">No PDFs match your search. Try different keywords or change the subject filter.</div>
-      </div>`;
-    return;
-  }
-
-  grid.innerHTML = pdfs.map((pdf, i) => `
-    <div class="pdf-card" data-subject="${pdf.subject}" style="animation-delay:${Math.min(i, 20) * 30}ms" onclick="openPDF('${pdf.fileId}', '${escHtml(pdf.name)}')">
-      <div class="card-top">
-        <div class="pdf-thumb">📄</div>
-        <div class="card-info">
-          <div class="card-title" title="${escHtml(pdf.name)}">${escHtml(pdf.name)}</div>
-          <div class="card-meta">
-            <span class="subject-tag ${pdf.subject}">${subjectEmoji(pdf.subject)} ${pdf.subject}</span>
-            <span class="card-date">${pdf.dateStr}</span>
-          </div>
-        </div>
-      </div>
-      ${pdf.caption ? `<div class="card-desc">${escHtml(pdf.caption)}</div>` : ''}
-      <div class="card-footer">
-        <span class="card-size">${formatSize(pdf.size)}</span>
-        <a class="btn-download" onclick="event.stopPropagation(); downloadPDF('${pdf.fileId}', '${escHtml(pdf.name)}')" href="#">
-          ⬇ Download
-        </a>
-      </div>
-    </div>`
-  ).join('');
-}
-
-function subjectEmoji(s) {
-  return { Physics:'⚛️', Chemistry:'🧪', Mathematics:'📐', Mixed:'📦' }[s] || '📄';
-}
-
-function escHtml(str) {
-  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-}
-
-function formatSize(bytes) {
-  if (!bytes) return '? KB';
-  if (bytes < 1024) return bytes + ' B';
-  if (bytes < 1048576) return (bytes/1024).toFixed(1) + ' KB';
-  return (bytes/1048576).toFixed(1) + ' MB';
-}
-
-// ─────────────── Filtering & sorting ───────────────
-function filterAndSort() {
-  const q = document.getElementById('searchInput').value.toLowerCase().trim();
-  const sort = document.getElementById('sortSelect').value;
-
-  let results = allPDFs.filter(p => {
-    const matchSubject = activeFilter === 'All' || p.subject === activeFilter;
-    const matchQuery = !q || p.name.toLowerCase().includes(q) || p.caption.toLowerCase().includes(q) || p.subject.toLowerCase().includes(q);
-    return matchSubject && matchQuery;
-  });
-
-  switch (sort) {
-    case 'date-asc':   results.sort((a,b) => a.date - b.date); break;
-    case 'date-desc':  results.sort((a,b) => b.date - a.date); break;
-    case 'name-asc':   results.sort((a,b) => a.name.localeCompare(b.name)); break;
-    case 'name-desc':  results.sort((a,b) => b.name.localeCompare(a.name)); break;
-    case 'size-desc':  results.sort((a,b) => b.size - a.size); break;
-  }
-
-  return results;
-}
-
-function filterPDFs() { renderPDFs(filterAndSort()); }
-function sortPDFs()   { renderPDFs(filterAndSort()); }
-
-function setFilter(chip) {
-  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-  chip.classList.add('active');
-  activeFilter = chip.dataset.subject;
-  filterPDFs();
-}
-
-// ─────────────── Open / download ───────────────
-async function openPDF(fileId, name) {
-  if (!botToken) { showToast('⚠️ Connect a channel first.', 'error'); return; }
-  try {
-    showToast('⏳ Getting file link...', 'success');
-    const url = await getFileUrl(botToken, fileId);
-    window.open(url, '_blank');
-  } catch (err) {
-    showToast('❌ ' + err.message, 'error');
-  }
-}
-
-async function downloadPDF(fileId, name) {
-  if (!botToken) { showToast('⚠️ Connect a channel first.', 'error'); return; }
-  try {
-    showToast('⏳ Preparing download...', 'success');
-    const url = await getFileUrl(botToken, fileId);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = name;
-    a.target = '_blank';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    showToast('⬇️ Download started!', 'success');
-  } catch (err) {
-    showToast('❌ ' + err.message, 'error');
-  }
-}
-
-// ─────────────── Stats ───────────────
-function updateStats() {
-  const counts = { Physics: 0, Chemistry: 0, Mathematics: 0, Mixed: 0 };
-  allPDFs.forEach(p => { counts[p.subject] = (counts[p.subject] || 0) + 1; });
-  document.getElementById('statTotal').textContent = allPDFs.length;
-  document.getElementById('statPhysics').textContent = counts.Physics;
-  document.getElementById('statChemistry').textContent = counts.Chemistry;
-  document.getElementById('statMaths').textContent = counts.Mathematics;
-  document.getElementById('resultCount').textContent = allPDFs.length + ' files';
-}
-
-// ─────────────── Skeleton loading ───────────────
-function showLoadingSkeleton() {
-  const grid = document.getElementById('pdfGrid');
-  grid.innerHTML = Array(9).fill(0).map((_, i) => `
-    <div class="skeleton-card" style="animation-delay:${i*50}ms">
-      <div style="display:flex;gap:12px">
-        <div class="skel" style="width:48px;height:56px;border-radius:8px;flex-shrink:0"></div>
-        <div style="flex:1">
-          <div class="skel" style="height:14px;margin-bottom:10px;width:85%"></div>
-          <div class="skel" style="height:14px;width:55%"></div>
-        </div>
-      </div>
-      <div class="skel" style="height:12px;width:95%"></div>
-      <div class="skel" style="height:12px;width:70%"></div>
-      <div style="display:flex;justify-content:space-between;padding-top:10px;border-top:1px solid var(--border)">
-        <div class="skel" style="height:12px;width:60px"></div>
-        <div class="skel" style="height:28px;width:90px;border-radius:8px"></div>
-      </div>
-    </div>`).join('');
-  document.getElementById('resultCount').textContent = 'Loading...';
-}
-
-// ─────────────── Error state ───────────────
-function showError(msg) {
-  document.getElementById('pdfGrid').innerHTML = `
-    <div class="state-container">
-      <div class="state-icon">⚠️</div>
-      <div class="state-title">CONNECTION FAILED</div>
-      <div class="state-text">${escHtml(msg)}<br><br>Make sure your bot token is correct and the bot is an admin of the channel.</div>
-    </div>`;
-  document.getElementById('resultCount').textContent = '0 files';
-}
-
-// ─────────────── Status indicator ───────────────
-function setStatus(state, text) {
-  const dot = document.getElementById('statusDot');
-  const txt = document.getElementById('statusText');
-  dot.className = 'status-dot ' + (state === 'live' ? 'live' : state === 'error' ? 'error' : '');
-  txt.textContent = text;
-}
-
-// ─────────────── Toast ───────────────
-let toastTimer;
-function showToast(msg, type = 'success') {
-  const el = document.getElementById('toast');
-  const icon = document.getElementById('toastIcon');
-  const txt = document.getElementById('toastMsg');
-  icon.textContent = type === 'error' ? '❌' : '✅';
-  txt.textContent = msg;
-  el.className = 'toast show ' + type;
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => { el.className = 'toast'; }, 3500);
-}
-
-// ─────────────── Keyboard shortcut ───────────────
-document.addEventListener('keydown', e => {
-  if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-    e.preventDefault();
-    document.getElementById('searchInput').focus();
-  }
-  if (e.key === 'Escape') closeModal();
 });
+
+allPDFs = pdfs;
+
+document.getElementById('status').innerText =
+`${allPDFs.length} PDFs Loaded`;
+
+renderPDFs();
+
+}catch(err){
+
+document.getElementById('status').innerText =
+'Loading Failed: Contact Admin';
+
+}
+
+}
+
+async function getFileURL(fileId){
+
+const res = await fetch(
+`https://api.telegram.org/bot${BOT_TOKEN}/getFile?file_id=${fileId}`
+);
+
+const data = await res.json();
+
+return `https://api.telegram.org/file/bot${BOT_TOKEN}/${data.result.file_path}`;
+
+}
+
+async function openPDF(fileId){
+
+const url = await getFileURL(fileId);
+
+window.open(url, '_blank');
+
+}
+
+function formatSize(bytes){
+
+if(bytes < 1024)
+return bytes + ' B';
+
+if(bytes < 1048576)
+return (bytes/1024).toFixed(1) + ' KB';
+
+return (bytes/1048576).toFixed(1) + ' MB';
+
+}
+
+function renderPDFs(){
+
+const grid = document.getElementById('pdfGrid');
+
+const q = document
+.getElementById('search')
+.value
+.toLowerCase();
+
+const filtered = allPDFs.filter(pdf => {
+
+return (
+pdf.name.toLowerCase().includes(q) ||
+pdf.caption.toLowerCase().includes(q)
+);
+
+});
+
+grid.innerHTML = filtered.map(pdf => `
+
+<div class="card">
+
+<div class="subject">PDF</div>
+
+<h3>${pdf.name}</h3>
+
+<p>${pdf.caption || 'No Description'}</p>
+
+<div class="size">
+${formatSize(pdf.size)}
+</div>
+
+<button onclick="openPDF('${pdf.fileId}')">
+📖 Open PDF
+</button>
+
+</div>
+
+`).join('');
+
+}
+
+fetchPDFs();
+
 </script>
+
 </body>
 </html>
